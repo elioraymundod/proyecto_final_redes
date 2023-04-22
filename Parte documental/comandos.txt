@@ -1,0 +1,62 @@
+Comandos switch
+--creacion vlan
+vlan 5
+name informatica
+
+
+-- Interfaces que comunican switch con computadoras
+int fa0/2
+switchport mode access
+switchport access vlan 5
+
+
+--Interfaz truncal
+int fa0/1
+switchport mode truk
+
+
+--En el switch truncal se deben crear todas las vlan y se deben definir todos los puertos en modo trunk
+
+Comandos router
+int f0/0.1
+--encaptulation dot1q "vlan" --todas las creadas
+ip address "ip de la vlan x.x.x.1 y mask
+no shutdown 
+si se quiere dar acceso a un server: ip helper-address "ip del hub" (dentro de la subinterfaz)
+
+
+--Agregar NAT Dinamica
+ip nat pool "nombre" 200.168.10.1 200.168.10.2 netmask 255.255.255.0
+access-list 1 permit 192.168.1.0 0.0.0.255
+ip nat inside source list 1 pool "nombre"
+al final configurar los de entrada y salida
+int fa0/0
+ip nat inside
+exit
+int fa0/1
+ip nat outside
+exit
+
+
+
+---------------------------RUTEO ESTATICO
+1. Configurar TODOS los seriales con una ip en todos los routers :
+	int se0/1/0
+	ip address 10.2.2.1 255.0.0.0
+	
+2. En el primer router configurar la ip a la que se quiere llegar e indicar la via mas cercana
+	ip route 192.168.20.1         255.255.255.0  				10.2.2.1
+		     (red que llegare)    (mask de la red a llegar)     (via mas cercana)
+Hacer esto con todos los routers a conectar.
+
+
+---------------------------RUTEO DINAMICO
+1. route rip
+2. "configurar todas las redes a conectar con el siguiente comando":
+	network 192.168.0.0
+	network 10.2.2.0
+	network 192.168.30.0
+Hacer esto con todos los routers a conectar.
+	
+
+	
